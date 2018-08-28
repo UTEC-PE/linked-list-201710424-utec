@@ -20,54 +20,138 @@ class List {
         List(){
           head = NULL;
           tail = NULL;
+          this->nodes=0;
         };
 
         T front(){
-          return head->data;
+          if (head == NULL) {
+            throw("Lista vacia.");
+          }else
+            return head->data;
         };
         T back(){
-          return tail->data;
+          if (tail == NULL) {
+            throw("Lista vacia.");
+          }else
+            return tail->data;
         };
         void push_front(T value){
           Node<T> *temp = new Node<T>;
           temp->data = value;
           temp->next = head;
+          this->nodes++;
+          head = temp;
           if(head==NULL){
-            head = temp;
             tail = temp;
-            temp = NULL;
           }
-          else{
-            head=temp;
-          }
+          temp = NULL;
+          delete temp;
         };
         void push_back(T value){
           Node<T> *temp = new Node<T>;
           temp->data = value;
           temp->next = NULL;
+          this->nodes++;
           if(head==NULL){
             head = temp;
-            tail = temp;
-            temp = NULL;
           }
           else{
             tail->next=temp;
-            tail=temp;
           }
+          tail=temp;
+          temp = NULL;
+          delete temp;
         };
         void pop_front(){
-          head->data = head->next->data;
-          head = head->next;
+          if(this->head==NULL){
+            throw("Lista vacia.");
+          }else if(this->head==this->tail){
+            this->head=NULL;
+            this->tail=NULL;
+            this->nodes--;
+          }else{
+            this->head = this->head->next;
+            this->nodes--;
+          }
         };
         void pop_back(){
+          if(this->head==NULL){
+            throw("Lista vacia.");
+          }else if(this->head==this->tail){
+            this->head=NULL;
+            this->tail=NULL;
+            this->nodes--;
+          }else{
+            Node<T> *temp = new Node<T>;
+            temp = this->head;
+            while (temp->next!=tail) {
+              temp = temp->next;
+            }
+            temp->next = NULL;
+            this->tail = temp;
+            this->nodes--;
+            temp = NULL;
+          }
         };
-        T get(int position);
-        void concat(List<T> &other);
-        bool empty();
-        int size();
-        void print();
-        void print_reverse();
-        void clear();
+        T get(int position){
+          if (!this->head) {
+            throw("Lista vacia.");
+          }else{
+            Node<T> *temp = this->head;
+            for (int i = 0; i < position; i++) {
+              temp = temp->next;
+            }
+            return temp->data;
+          }
+        };
+        void concat(List<T> *other){
+          this->tail->next = other->head;
+          this->tail = other->tail;
+        };
+        bool empty(){
+          return !this->head;
+        };
+        int size(){
+          return this->nodes;
+        };
+        void print(){
+          if(!this->head){
+            cout << "Lista vacia.\n";
+          }else{
+            Node<T> *temp = this->head;
+            while (temp->next || temp == this->tail) {
+              cout<< temp->data << "\n";
+              if (temp != this->tail) {
+                temp = temp->next;
+              }else break;
+            }
+          }
+        };
+        void print_reverse(){
+          if(!this->head){
+            cout << "Lista vacia \n";
+          }else{
+            Node<T> *temp_2 = this->tail;
+            Node<T> *temp_1 = this->head;
+            while (temp_1->next || temp_2 == this->head){
+              if (temp_1 == temp_2) {
+                cout << temp_2->data <<"\n";
+                break;
+              }else if (temp_1->next != temp_2) {
+                temp_1 = temp_1->next;
+              }else if(temp_1->next){
+                cout <<temp_2->data <<"\n";
+                temp_2 = temp_1;
+                temp_1 = this->head;
+              }
+            }
+          }
+        };
+        void clear(){
+          this->head=NULL;
+          this->tail=NULL;
+          this->nodes=0;
+        };
         Iterator<T> begin();
         Iterator<T> end();
 
