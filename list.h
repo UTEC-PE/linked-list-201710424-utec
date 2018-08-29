@@ -14,7 +14,13 @@ class List {
         Node<T>* tail;
         int nodes;
 
-        void print_reverse(Node<T>* head);
+        void print_reverse(Node<T>* head){
+          if (!this->head) {
+            throw("Lista vacia.");
+          }else{
+            this->head->print_reverse();
+          }
+        };
 
     public:
         List(){
@@ -36,34 +42,30 @@ class List {
             return tail->data;
         };
         void push_front(T value){
-          Node<T> *temp = new Node<T>;
-          temp->data = value;
-          temp->next = head;
+          Node<T> *temp = new Node<T>{value, this->head};
           this->nodes++;
-          head = temp;
-          if(head==nullptr){
-            tail = temp;
+          this->head = temp;
+          if(this->head==nullptr){
+            this->tail = temp;
           }
           temp = nullptr;
           delete temp;
         };
         void push_back(T value){
-          Node<T> *temp = new Node<T>;
-          temp->data = value;
-          temp->next = nullptr;
+          Node<T> *temp = new Node<T>{value, nullptr};
           this->nodes++;
           if(head==nullptr){
-            head = temp;
+            this->head = temp;
           }
           else{
-            tail->next=temp;
+            this->tail->next=temp;
           }
-          tail=temp;
+          this->tail=temp;
           temp = nullptr;
           delete temp;
         };
         void pop_front(){
-          if(this->head==nullptr){
+          if(!this->head){
             throw("Lista vacia.");
           }else if(this->head==this->tail){
             this->head=nullptr;
@@ -91,6 +93,7 @@ class List {
             this->tail = temp;
             this->nodes--;
             temp = nullptr;
+            delete temp;
           }
         };
         T get(int position){
@@ -107,6 +110,7 @@ class List {
         void concat(List<T> &other){
           this->tail->next = other.head;
           this->tail = other.tail;
+          this->nodes = this->nodes + other.nodes;
         };
         bool empty(){
           return !this->head;
@@ -123,7 +127,11 @@ class List {
               cout<< temp->data << "\n";
               if (temp != this->tail) {
                 temp = temp->next;
-              }else break;
+              }else{
+                temp = nullptr;
+                delete temp;
+                break;
+              }
             }
           }
         };
@@ -131,20 +139,7 @@ class List {
           if(!this->head){
             cout << "Lista vacia \n";
           }else{
-            Node<T> *temp_2 = this->tail;
-            Node<T> *temp_1 = this->head;
-            while (temp_1->next || temp_2 == this->head){
-              if (temp_1 == temp_2) {
-                cout << temp_2->data <<"\n";
-                break;
-              }else if (temp_1->next != temp_2) {
-                temp_1 = temp_1->next;
-              }else if(temp_1->next){
-                cout <<temp_2->data <<"\n";
-                temp_2 = temp_1;
-                temp_1 = this->head;
-              }
-            }
+            head->print_reverse();
           }
         };
         void clear(){
@@ -156,7 +151,11 @@ class List {
         Iterator<T> end();
 
         /*~List(){
-          delete[] this;
+          if (this->head) {
+            this->head->killSelf();
+          }
+          delete[] head;
+          delete[] tail;
         };*/
 };
 #endif
