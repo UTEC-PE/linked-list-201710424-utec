@@ -4,7 +4,7 @@
 template <typename T>
 struct Node {
     T data;
-    struct Node* next = NULL;
+    struct Node* next = nullptr;
 
     void killSelf();
 };

@@ -18,19 +18,19 @@ class List {
 
     public:
         List(){
-          head = NULL;
-          tail = NULL;
+          head = nullptr;
+          tail = nullptr;
           this->nodes=0;
         };
 
         T front(){
-          if (head == NULL) {
+          if (!this->head) {
             throw("Lista vacia.");
           }else
             return head->data;
         };
         T back(){
-          if (tail == NULL) {
+          if (!this->tail) {
             throw("Lista vacia.");
           }else
             return tail->data;
@@ -41,33 +41,33 @@ class List {
           temp->next = head;
           this->nodes++;
           head = temp;
-          if(head==NULL){
+          if(head==nullptr){
             tail = temp;
           }
-          temp = NULL;
+          temp = nullptr;
           delete temp;
         };
         void push_back(T value){
           Node<T> *temp = new Node<T>;
           temp->data = value;
-          temp->next = NULL;
+          temp->next = nullptr;
           this->nodes++;
-          if(head==NULL){
+          if(head==nullptr){
             head = temp;
           }
           else{
             tail->next=temp;
           }
           tail=temp;
-          temp = NULL;
+          temp = nullptr;
           delete temp;
         };
         void pop_front(){
-          if(this->head==NULL){
+          if(this->head==nullptr){
             throw("Lista vacia.");
           }else if(this->head==this->tail){
-            this->head=NULL;
-            this->tail=NULL;
+            this->head=nullptr;
+            this->tail=nullptr;
             this->nodes--;
           }else{
             this->head = this->head->next;
@@ -75,11 +75,11 @@ class List {
           }
         };
         void pop_back(){
-          if(this->head==NULL){
+          if(this->head==nullptr){
             throw("Lista vacia.");
           }else if(this->head==this->tail){
-            this->head=NULL;
-            this->tail=NULL;
+            this->head=nullptr;
+            this->tail=nullptr;
             this->nodes--;
           }else{
             Node<T> *temp = new Node<T>;
@@ -87,10 +87,10 @@ class List {
             while (temp->next!=tail) {
               temp = temp->next;
             }
-            temp->next = NULL;
+            temp->next = nullptr;
             this->tail = temp;
             this->nodes--;
-            temp = NULL;
+            temp = nullptr;
           }
         };
         T get(int position){
@@ -104,9 +104,9 @@ class List {
             return temp->data;
           }
         };
-        void concat(List<T> *other){
-          this->tail->next = other->head;
-          this->tail = other->tail;
+        void concat(List<T> &other){
+          this->tail->next = other.head;
+          this->tail = other.tail;
         };
         bool empty(){
           return !this->head;
@@ -148,15 +148,15 @@ class List {
           }
         };
         void clear(){
-          this->head=NULL;
-          this->tail=NULL;
+          this->head=nullptr;
+          this->tail=nullptr;
           this->nodes=0;
         };
         Iterator<T> begin();
         Iterator<T> end();
 
-        ~List(){
-          delete this;
-        };
+        /*~List(){
+          delete[] this;
+        };*/
 };
 #endif
