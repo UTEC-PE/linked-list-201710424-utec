@@ -16,7 +16,7 @@ class List {
 
         void print_reverse(Node<T>* head){
           if (!this->head) {
-            throw("Lista vacia.");
+            throw("Lista vacia."); // Si la lista está vacía, no se imprime nada. No deberíamos mostrar error
           }else{
             this->head->print_reverse();
           }
@@ -45,13 +45,13 @@ class List {
           Node<T> *temp = new Node<T>{value, this->head};
           this->nodes++;
           this->head = temp;
-          if(this->head==nullptr){
+          if(this->head==nullptr){ // Esto nunca se va a dar porque estás igualando head a temp en el paso anterior. Revisa la implementación que no está muy bien
             this->tail = temp;
           }
           temp = nullptr;
           delete temp;
         };
-        void push_back(T value){
+        void push_back(T value){ // Igual que el caso anterior, revisa la implementación que no está bien
           Node<T> *temp = new Node<T>{value, nullptr};
           this->nodes++;
           if(head==nullptr){
@@ -64,7 +64,7 @@ class List {
           temp = nullptr;
           delete temp;
         };
-        void pop_front(){
+        void pop_front(){ // No te olvides de dar delete para liberar memoria
           if(!this->head){
             throw("Lista vacia.");
           }else if(this->head==this->tail){
@@ -84,7 +84,7 @@ class List {
             this->tail=nullptr;
             this->nodes--;
           }else{
-            Node<T> *temp = new Node<T>;
+            Node<T> *temp = new Node<T>; // No es necesario dar new
             temp = this->head;
             while (temp->next!=tail) {
               temp = temp->next;
@@ -142,7 +142,7 @@ class List {
             head->print_reverse();
           }
         };
-        void clear(){
+        void clear(){ // Esto está mal, deberías dar delete a todos los elementos de la lista y no solo apuntar a nullptr
           this->head=nullptr;
           this->tail=nullptr;
           this->nodes=0;
@@ -150,7 +150,7 @@ class List {
         Iterator<T> begin();
         Iterator<T> end();
 
-        /*~List(){
+        /*~List(){ 
           if (this->head) {
             this->head->killSelf();
           }
